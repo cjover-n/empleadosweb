@@ -38,14 +38,17 @@ public class EmpleadoBD {
 			// creo el statement
 			statement = connection.createStatement();
 			// ejecuto la consulta
-			resultset = statement.executeQuery("SELECT FIRST_NAME FROM EMPLOYEES");
+			resultset = statement.executeQuery("SELECT FIRST_NAME, EMPLOYEE_ID FROM EMPLOYEES");
 
 			l_empleados = new ArrayList<Empleado>();
 			Empleado e_auxiliar = null;
+			String nombre = null;
+			int id = -1;
 			
 			while (resultset.next()) {
-				String nombre = resultset.getString("FIRST_NAME");
-				e_auxiliar = new Empleado(nombre);
+				nombre = resultset.getString("FIRST_NAME");
+				id = resultset.getInt("EMPLOYEE_ID");
+				e_auxiliar = new Empleado(nombre, id);
 				l_empleados.add(e_auxiliar);
 				
 				System.out.println(nombre);

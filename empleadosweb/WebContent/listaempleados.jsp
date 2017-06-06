@@ -10,7 +10,7 @@
 <body>
 <h1>LISTA EMPLEADOS</h1>
 <c:forEach items="${lempleados}" var="empleado">
-	<c:out value="${empleado.nombre}"></c:out>
+	<c:out value="${empleado.nombre}"></c:out> <c:out value="${empleado.id}"></c:out><br>
 </c:forEach>
 </body>
 </html>
