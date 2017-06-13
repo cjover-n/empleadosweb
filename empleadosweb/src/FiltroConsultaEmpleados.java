@@ -53,10 +53,20 @@ public class FiltroConsultaEmpleados implements Filter {
 		long tiempo_total = tiempo_final - tiempo_inicial;
 		log.debug("Tiempo_total " + tiempo_total);
 		
+		Long tms = (Long)sc.getAttribute("tms");
+		
+		if(tms == null){
+			sc.setAttribute("tms", tiempo_total);
+		}else{
+			tms = (tms + tiempo_total) / 2;
+			sc.setAttribute("tms", tms);
+		}
+		
 		if (peticiones == null)
 		{
 			log.debug("No existen peticiones");
 			sc.setAttribute("peticiones", 0);
+			
 		}
 		else
 		{
