@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.rmi.runtime.Log;
+
 
 public class EmpleadoBD {
 	/*
@@ -21,6 +23,54 @@ public class EmpleadoBD {
 		}
 	}
 	*/
+	public Empleado obtenerEmpleadoBD (int id){
+		Empleado empleado = null;
+		Connection conexion = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		try {
+			conexion = Pool.getConnection();
+			st = conexion.createStatement();
+			rs = st.executeQuery("SELECT EMPLOYEE_ID" + ", FIRST_NAME" + ", LAST_NAME" + "EMAIL FROM " + "EMPLOYEES WHERE " + "EMPLOYEE_ID = " + id);
+			rs.next();
+			int nempleado = rs.getInt("EMPLOYEE_ID");
+			String fname = rs.getString("FIRST_NAME");
+			String lname = rs.getString("LAST_NAME");
+			String email = rs.getString("EMAIL");
+			empleado = new Empleado(fname, nempleado, lname, email);
+		} catch (Exception e) {
+			
+		}finally {
+			Pool.liberarRecursos(conexion, st, rs);
+		}
+		
+		return empleado;
+	}
+	
+	public boolean existeEmpleadoEnBD (String nombre, String pwd)
+	{
+		boolean existe = false;
+		Connection conexion = null;
+		Statement st = null;
+		ResultSet rs = null;
+		
+		try{
+			int ipwd = Integer.parseInt(pwd);
+			conexion = Pool.getConnection();
+			st = conexion.createStatement();
+			rs = st.executeQuery("SELECT" + " EMPLOYEE_ID FROM" + " EMPLOYEES WHERE" + " FIRST_NAME = '" + nombre + "' AND " + "EMPLOYEE_ID = " + ipwd);
+			existe = rs.next();
+		}catch (Exception e) {
+			//TODO usar el log
+			e.printStackTrace();
+		} finally {
+			Pool.liberarRecursos(conexion, st, rs);
+		}
+		
+		return existe;
+	}
+	
 	public List<Empleado> getEmpleadosBD ()
 	{
 		List<Empleado> l_empleados = null;
